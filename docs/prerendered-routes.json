@@ -1,0 +1,12 @@
+{
+  "routes": [
+    "/",
+    "/404-NotFound",
+    "/bard",
+    "/contact",
+    "/home",
+    "/sign-in",
+    "/skills",
+    "/test"
+  ]
+}
