@@ -63,12 +63,12 @@ import {translate} from "../../shared/animations/animations";
 })
 export class ContactPageComponent {
   listContact = [
-    {icon: 'bi bi-telephone-fill', label: 'telephone', value: '+261 30 00 000 00'},
-    {icon: 'bi bi-google', label: 'e-mail', value: 'tiavina@gmail.com'},
+    {icon: 'bi bi-telephone-fill', label: 'telephone', value: '+261 34 09 407 74'},
+    {icon: 'bi bi-google', label: 'e-mail', value: 'titus50231@gmail.com'},
     {icon: 'bi bi-facebook', label: 'facebook', value: 'Tiavina Ti\'Ti'},
     {icon: 'bi bi-linkedin', label: 'linkedin', value: 'Tiavina Randrianoelison'},
-    {icon: 'bi bi-github', label: 'github', value: 'tiavina@github.com'},
-    {icon: 'bi bi-link', label: 'github', value: 'http://localhost:4200'},
+    {icon: 'bi bi-github', label: 'github', value: 'https://github.com/TiavinaTiTi'},
+    {icon: 'bi bi-link', label: 'github', value: 'https://tiavinatiti.github.io/portFolioDeployement/home'},
     {icon: 'bi bi-geo-alt-fill', label: 'localisation', value: 'Antananarivo 101, Madagascar'},
   ]
 }
