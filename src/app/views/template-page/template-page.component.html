@@ -1,0 +1,13 @@
+<div class="bg-light position-relative">
+  <div class="container pt-2 min-vh-100 position-relative z-1">
+    <app-header></app-header>
+    <main class="h-body">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <div class="position-fixed end-0 bottom-0 m-2 z-3">
+    <a routerLink="bard" routerLinkActive="invisible" style="width: 50px; height: 50px;" class="btn bg-primary p-3 border rounded-circle d-flex justify-content-center align-items-center">
+      <i class="text-white bi-chat-right-text-fill"></i>
+    </a>
+  </div>
+</div>

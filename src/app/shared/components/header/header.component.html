@@ -1,0 +1,31 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light ff-manuscript" aria-label="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi-slack"></i>
+        Tiavina
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-end" id="navbar">
+        <ul class="navbar-nav gap-4 fw-semibold">
+          @for (item of menus; track item.label){
+            <li class="nav-item">
+              <a class="nav-link" routerLink="{{item.root}}" routerLinkActive="border-bottom border-2 border-info">
+                @if (item.icon != ''){
+                  <i class="{{item.icon}}"></i>
+                }
+                {{item.label}}
+              </a>
+            </li>
+          }
+        </ul>
+<!--        <button class="btn btn-sm" (click)="text()">-->
+        <!--<button class="btn btn-sm">
+          <i class="bi-person-circle text-secondary"></i>
+        </button>-->
+      </div>
+    </div>
+  </nav>
+</header>

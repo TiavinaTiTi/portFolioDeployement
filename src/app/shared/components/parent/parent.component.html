@@ -1,0 +1,17 @@
+<!--<h1>Input</h1>
+<h2 (click)="change($event)">Parent Component</h2>
+<app-enfant [valeurDuParent]="valeurDuParent"></app-enfant>
+
+<h1>Output</h1>
+<h2>Parent Component</h2>
+<app-enfant (evenementVersParent)="recevoirEvent($event)"></app-enfant>
+<p>Message du composant enfant: {{ messageDuEnfant }}</p>-->
+<div class="" @todoAnimation>
+  <h1>Lorem ipsum dolor sit amet.</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, in omnis perspiciatis quos sint veritatis? Ab aspernatur dolore esse, exercitationem, incidunt labore maiores provident quasi ratione totam ut vero voluptatem.</p>
+  <div class="row gap-1" *ngIf="todos">
+    <button class="btn btn-primary" @todoItem *ngFor="let todo of todos; index as i">
+      <span> {{todo.item}}</span>
+    </button>
+  </div>
+</div>

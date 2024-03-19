@@ -1,0 +1,15 @@
+<div class="h-100 d-lg-flex justify-content-lg-center align-items-lg-center">
+  <div @translateLInOut class="card rounded-0 shadow col-12 col-lg-4 mt-4 mt-lg-0">
+    <div class="card-body">
+      <h4 class="card-title ff-manuscript fw-semibold">Contacter moi!</h4>
+      <p class="fs-7 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, suscipit!</p>
+      @for (item of listContact; track $index){
+        <p @fade>
+          <i class="{{item.icon}} me-2"></i>
+          {{ item.value }}
+        </p>
+      }
+
+    </div>
+  </div>
+</div>
