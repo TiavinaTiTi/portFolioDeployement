@@ -1,12 +1,15 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
+import {UserService} from "../../services/user/user-service";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    NgClass
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -18,29 +21,22 @@ export class HeaderComponent {
     {'label': 'Skills', 'icon': '', 'root': '/skills'},
     {'label': 'Bard', 'icon': '', 'root': '/bard'},
     {'label': 'Contact', 'icon': '', 'root': '/contact'},
-    {'label': '', 'icon': 'bi-person-circle', 'root': '/sign-in'}
+    {'label': 'Docs', 'icon': '', 'root': '/docs'},
+    // {'label': '', 'icon': 'bi-person-circle', 'root': '/sign-in'}
   ]
 
+  route: Router = inject(Router);
+  autheService: UserService = inject(UserService);
 
-  constructor(private route: Router) {
+  @Input() theme: boolean = false;
+
+  sign(){
+    if(this.autheService.isAuthenticed()){
+      this.autheService.logOut()
+      this.route.navigateByUrl("/sign-in")
+    }else {
+      this.route.navigateByUrl("/sign-in")
+    }
   }
-
-  /*navigate(url: string){
-    setTimeout(()=>{
-      this.route.navigateByUrl(url)
-    }, 1000)
-  }*/
-
-
-  // TEST ENFANT TO PARENT
-  /*@Output() eventIsShow = new EventEmitter<boolean>();
-
-  /!**
-   * Permet d'activer la methode isShow
-   *!/
-  text(){
-    console.log("Valeur Enfant")
-    this.eventIsShow.emit()
-  }*/
 
 }

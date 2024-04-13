@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AsyncPipe, DatePipe, JsonPipe, NgClass, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {SkillsGateway} from "../../core/gateways/skills.gateway";
-import {SkillResponse} from "../../core/models/skill-response";
-import {Skill} from "../../core/models/skill";
+import {SkillsService} from "../../shared/services/skills/skills.service";
+import {SkillResponseModel} from "../../core/models/skill-response.model";
+import {SkillModel} from "../../core/models/skill.model";
 import {Observable} from "rxjs";
-import {Router, RouterLink} from "@angular/router";
+import {RouterLink} from "@angular/router";
+import {UserService} from "../../shared/services/user/user-service";
+import {ThemeService} from "../../shared/services/theme/theme.service";
+import {SkillDetailComponent} from "../skill-detail/skill-detail.component";
 
 @Component({
   selector: 'app-skill-page',
@@ -17,35 +20,12 @@ import {Router, RouterLink} from "@angular/router";
     NgIf,
     NgClass,
     RouterLink,
-    DatePipe
+    DatePipe,
+    SkillDetailComponent
   ],
   templateUrl: './skill-page.component.html',
   styleUrl: './skill-page.component.scss',
-  animations: [
-    /*trigger('todo', [
-      transition('* => *', [
-        group([
-          query('.col', [
-            useAnimation(animation([
-              style({opacity: 0}),
-              animate(
-                '.6s ease-out',
-                keyframes([
-                  style({opacity: .2, offset: 0.3}),
-                  style({opacity: .6, offset: 0.6}),
-                  style({opacity: .8, offset: 1})
-                ])
-              )
-            ]))
-          ]),
-          query('@translateLeftToRight',
-            stagger(200, animateChild()),{optional: true}
-          )
-        ])
-      ])
-    ]),*/
-
-  ]
+  animations: []
 })
 
 
@@ -58,14 +38,17 @@ export class SkillPageComponent implements OnInit{
   protected readonly Array = Array;
 
   formSkills!: FormGroup;
-  listSkills$!: Observable<SkillResponse>;
-  listSkills!: SkillResponse;
+  listSkills$!: Observable<SkillResponseModel>;
+  // listSkills!: SkillResponseModel;
+  skillDetail!: SkillModel;
   msgError!: string;
 
   defaultPage: number = 0;
   defaultSize: number = 3;
 
   notification!: string;
+
+  theme: string = 'light';
 
   /**
    * Format validator URL GitHub
@@ -79,18 +62,22 @@ export class SkillPageComponent implements OnInit{
   // show: boolean = true
   constructor(
     private fb: FormBuilder,
-    private skillGateway: SkillsGateway,
-    private route: Router
+    private skillsService: SkillsService,
+    public authService: UserService,
+    private themeService: ThemeService
   ) {
   }
 
   ngOnInit() {
+    this.themeService.currentTheme.subscribe((value)=>{
+      this.theme = value
+    })
+
     // this.urlRegex = this._formatPatternURL()
     this.initFromSkills()
     let search = this.formSearch.controls.name.value
     this.getAllSkillsPage(search ,this.defaultSize, this.defaultPage)
   }
-
 
 
   initFromSkills(){
@@ -109,16 +96,13 @@ export class SkillPageComponent implements OnInit{
    * Get avec fetchAll in page and size
    */
   getAllSkillsPage(search:string, size:number, page: number){
-    /*this.skillGateway.getAllSkillsPage(search, size, page).subscribe({
+    this.listSkills$ = this.skillsService.getAllSkillsPage(search, size, page)
+
+    /*this.listSkills$.subscribe({
       next: value => {
-        this.listSkills$ = value
+        this.listSkills = value
       }
     })*/
-    this.listSkills$ = this.skillGateway.getAllSkillsPage(search, size, page)
-
-    this.listSkills$.subscribe({
-      next: value => this.listSkills = value
-    })
   }
 
   /**
@@ -146,7 +130,7 @@ export class SkillPageComponent implements OnInit{
   onSubmit(){
     if(this.formSkills.valid){
       if(this.formSkills.value.id === 0){
-        this.skillGateway.postSkill(this.formSkills.value).subscribe({
+        this.skillsService.postSkill(this.formSkills.value).subscribe({
           next: ()=>{
             let search = this.formSearch.controls.name.value
             this.getAllSkillsPage(search, this.defaultSize, this.defaultPage)
@@ -155,7 +139,7 @@ export class SkillPageComponent implements OnInit{
           error: err => this.msgError = err
         })
       }else {
-        this.skillGateway.updateSkill(this.formSkills.value, this.formSkills.value.id).subscribe({
+        this.skillsService.updateSkill(this.formSkills.value, this.formSkills.value.id).subscribe({
           next: () => {
             let search = this.formSearch.controls.name.value
             this.getAllSkillsPage(search, this.defaultSize, this.defaultPage)
@@ -174,7 +158,7 @@ export class SkillPageComponent implements OnInit{
   }
 
   deleteSkill(id: number){
-    this.skillGateway.deleteSkill(id).subscribe({
+    this.skillsService.deleteSkill(id).subscribe({
       next: ()=>{
         let search = this.formSearch.controls.name.value
         this.getAllSkillsPage(search, this.defaultSize, this.defaultPage)
@@ -182,7 +166,7 @@ export class SkillPageComponent implements OnInit{
     })
   }
 
-  updateFormsSkill(skill: Skill){
+  updateFormsSkill(skill: SkillModel){
     this.formSkills = this.fb.group({
       id: [skill.idSkills],
       title: [skill.title, Validators.required],
@@ -200,5 +184,12 @@ export class SkillPageComponent implements OnInit{
     }
     return '';
   }*/
+
+  showDetail(id: number){
+    this.skillsService.fetchSkillId(id).subscribe((value)=>{
+      this.skillDetail = value;
+      console.log("Skill Detail: " + JSON.stringify(value))
+    })
+  }
 
 }

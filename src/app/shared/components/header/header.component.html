@@ -1,7 +1,7 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-light ff-manuscript" aria-label="navbar">
+  <nav class="navbar navbar-expand-md ff-manuscript" [ngClass]="(theme)? 'navbar-dark' : 'navbar-light'" aria-label="navbar">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <i class="bi-slack"></i>
         Tiavina
       </a>
@@ -20,11 +20,15 @@
               </a>
             </li>
           }
+          <li class="nav-item">
+            <a class="nav-link" (click)="sign()">
+              <i class="position-relative" [ngClass]="(autheService.isAuthenticed())? 'bi-box-arrow-right' : 'bi-person-circle'">
+                <span class="rounded-circle position-absolute bottom-0" [ngClass]="(autheService.isAuthenticed())? 'bg-activate' : 'bg-deactivate' " style="width: 7px; height: 7px; right: 1px;"></span>
+              </i>
+            </a>
+          </li>
+
         </ul>
-<!--        <button class="btn btn-sm" (click)="text()">-->
-        <!--<button class="btn btn-sm">
-          <i class="bi-person-circle text-secondary"></i>
-        </button>-->
       </div>
     </div>
   </nav>

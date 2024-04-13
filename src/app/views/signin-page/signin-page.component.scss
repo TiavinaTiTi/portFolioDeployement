@@ -1,6 +1,19 @@
+
 @media screen and (max-width: 768px) {
   .sm-invisible{
     position: absolute;
     width: 0;
+  }
+
+  .md-visible{
+    visibility: visible;
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  .md-visible{
+    position: absolute;
+    visibility: hidden;
   }
 }

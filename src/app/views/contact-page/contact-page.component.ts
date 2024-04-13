@@ -1,23 +1,24 @@
-import { Component } from '@angular/core';
-import {rotate} from "../../shared/animations/rotate";
-import {translateLInOut} from "../../shared/animations/translateRInOut";
+import {Component, inject, OnInit} from '@angular/core';
+
 import {
-  animate,
   animateChild,
-  keyframes,
   query,
   stagger,
-  style,
   transition,
   trigger,
   useAnimation
 } from "@angular/animations";
-import {translate} from "../../shared/animations/animations";
+import {translate} from "../../shared/animations/translateAnimations";
+import {fadeAnimations} from "../../shared/animations/fadeAnimations";
+import {NgClass} from "@angular/common";
+import {ThemeService} from "../../shared/services/theme/theme.service";
 
 @Component({
   selector: 'app-contact-page',
   standalone: true,
-  imports: [],
+  imports: [
+    NgClass
+  ],
   templateUrl: './contact-page.component.html',
   styleUrl: './contact-page.component.scss',
   animations: [
@@ -47,21 +48,12 @@ import {translate} from "../../shared/animations/animations";
 
     trigger('fade', [
       transition(':enter', [
-        style({opacity: 0}),
-        animate(
-          '.6s ease-out',
-          keyframes([
-            style({opacity: .2, offset: 0.3}),
-            style({opacity: .6, offset: 0.6}),
-            style({opacity: .8, offset: 1})
-          ])
-        )
+        useAnimation(fadeAnimations)
       ]),
-
     ]),
   ]
 })
-export class ContactPageComponent {
+export class ContactPageComponent implements OnInit{
   listContact = [
     {icon: 'bi bi-telephone-fill', label: 'telephone', value: '+261 34 09 407 74'},
     {icon: 'bi bi-google', label: 'e-mail', value: 'titus50231@gmail.com'},
@@ -71,4 +63,11 @@ export class ContactPageComponent {
     {icon: 'bi bi-link', label: 'github', value: 'https://tiavinatiti.github.io/portFolioDeployement/home'},
     {icon: 'bi bi-geo-alt-fill', label: 'localisation', value: 'Antananarivo 101, Madagascar'},
   ]
+  theme: string = 'light';
+  themeService: ThemeService = inject(ThemeService);
+  ngOnInit() {
+    this.themeService.currentTheme.subscribe((value)=>{
+      this.theme = value
+    })
+  }
 }

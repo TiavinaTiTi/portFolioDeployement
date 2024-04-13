@@ -1,117 +1,134 @@
 <form [formGroup]="formSearch" (ngSubmit)="skillsFilter()" class="col-12 col-md-4 d-flex position-relative">
-  <input type="text" (input)="inputSearch()" formControlName="name" id="search" class="form-control rounded-pill pe-5" placeholder="Recherche...">
-  <span (click)="skillsFilter()" class="d-flex align-items-center position-absolute end-0 top-0 m-1">
-    <i class="bi-search btn btn-sm btn-dark rounded-circle"></i>
-  </span>
+  <input type="text" (input)="inputSearch()" formControlName="name" id="search" class="form-control rounded-pill pe-5" [ngClass]="(theme == 'light')? 'bg-dark text-light border-secondary text-white-placeholder' : ''" placeholder="Recherche...">
+  <a (click)="skillsFilter()" class="btn btn-sm rounded-circle d-flex align-items-center position-absolute end-0 top-0 m-1" [ngClass]="(theme == 'light')? 'btn-light' : 'btn-dark'">
+    <i class="bi-search"></i>
+  </a>
 </form>
-<!--<div *ngIf="show" @todo class="row mt-md-4 mt-2">-->
 <div class="row mt-md-4 mt-2">
-  <div class="col-lg-8">
+<!--  <div [ngClass]="(authService.isAuthenticed())?  'col-lg-8' : 'col-lg-12' " >-->
+  <div [ngClass]="(skillDetail || authService.isAuthenticed())? 'col-lg-8' : 'col-lg-12' ">
     @if(notification){
       <span class="alert alert-info">{{notification}}</span>
     }
-    @if ((listSkills$ | async)){
-      <div class="d-grid gap-1">
-        @for(skill of (listSkills$ | async)?.content; track skill.title){
-          <div class="col">
-<!--            <div *ngIf="show" @translateLeftToRight class="card border-0">-->
-            <div class="card border-0">
-              <div class="position-absolute end-0 m-2">
-                <span class="fs-7 badge bg-light text-secondary rounded-pill me-1">{{ skill.dateIn | date: 'dd MMMM' }}</span>
-                <a (click)="updateFormsSkill(skill)" class="btn btn-sm bg-light rounded-circle me-1">
-                  <i class="bi-pen text-secondary"></i>
-                </a>
-                <span (click)="deleteSkill(skill.idSkills)" class="btn btn-sm bg-light rounded-circle me-1">
-                  <i class="bi-trash-fill text-danger"></i>
-                </span>
-                <a href="{{skill.git}}" class="btn rounded-pill btn-sm btn-dark">
-                  <i class="bi bi-github"></i>
-                  GitHub
-                </a>
-              </div>
-              <div class="card-body">
-                <h4 class="card-title">
-                  {{skill.title}}
-                </h4>
-                <p class="text-body fs-7 text-muted">
-                  {{skill.description}}
-                </p>
-                @for (item of skill.skill.split(','); track $index){
-                  <span class="badge text-secondary fw-lighter bg-light me-1">{{item}}</span>
-                }
+    @if (listSkills$ | async; as listSkills){
+      @if(listSkills.content.length > 0){
+        <div class="d-grid gap-1">
+          @for(skill of listSkills.content; track skill.title){
+            <div class="col">
+              <div class="card border-0" [ngClass]="(theme == 'light')? 'bg-dark text-white' : ''">
+                <div class="position-absolute end-0 m-2">
+                  <span class="fs-7 badge bg-light text-secondary rounded-pill me-1">{{ skill.dateIn | date: 'dd MMMM' }}</span>
+
+                  @if (authService.isAuthenticed()){
+                    <a (click)="updateFormsSkill(skill)" class="btn btn-sm bg-light rounded-circle me-1">
+                      <i class="bi-pen text-secondary"></i>
+                    </a>
+                    <a (click)="deleteSkill(skill.idSkills)" class="btn btn-sm bg-light rounded-circle me-1">
+                      <i class="bi-trash-fill text-danger"></i>
+                    </a>
+                  }
+
+                  <a href="{{skill.git}}" target="_blank" class="btn rounded-pill btn-sm btn-dark">
+                    <i class="bi bi-github"></i>
+                    GitHub
+                  </a>
+                  @if (!authService.isAuthenticed()){
+                    <a (click)="showDetail(skill.idSkills)" class="btn rounded-pill btn-sm btn-light ms-1">
+                      <i class="bi-arrow-right"></i>
+                    </a>
+                  }
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">
+                    {{skill.title}}
+                  </h4>
+                  <p class="fs-7 text-secondary">
+                    {{skill.description}}
+                  </p>
+                  @for (item of skill.skill.split(','); track $index){
+                    <span class="badge text-secondary fw-lighter bg-light me-1">{{item}}</span>
+                  }
+                </div>
               </div>
             </div>
-          </div>
-        }
-        @if((listSkills$ | async)?.totalPages){
-          <div class="bd-example mt-4">
-            <nav>
-              <ul class="pagination pagination-sm">
-                @for (page of Array((listSkills$ | async)?.totalPages).fill(0); track i; let i = $index){
-                  <li class="page-item" [ngClass]="((listSkills$ | async)?.pageable!.pageNumber == i)? 'active': ''">
-                    <a class="page-link cursor-pointer" (click)="goToPage(i)">{{ i + 1 }}</a>
-                  </li>
-                }
+          }
+          @if(listSkills.totalPages){
+            <div class="bd-example mt-4">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  @for (page of Array(listSkills.totalPages).fill(0); track i; let i = $index){
+                    <li class="page-item" [ngClass]="(listSkills.pageable!.pageNumber == i)? 'active': ''">
+                      <a class="page-link cursor-pointer" (click)="goToPage(i)">{{ i + 1 }}</a>
+                    </li>
+                  }
 
-              </ul>
-            </nav>
-          </div>
-        }
+                </ul>
+              </nav>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="d-flex justify-content-center">
+          <span class="border px-2 py-1 rounded-pill text-secondary fs-7 bg-white shadow-sm">
+            <i class="bi-exclamation-diamond"></i>
+            Aucune compétence n’est ajoutée!
+          </span>
+        </div>
+      }
+
+    } @else {
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" [ngClass]="(theme == 'light')? 'text-light' : 'text-dark' "  role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     }
-
-
   </div>
-  <div class="col-lg-4 my-4 my-lg-0">
-    <div class="card rounded-0 shadow">
-      <div class="position-absolute end-0 m-1">
-        <button (click)="initFromSkills()" class="btn btn-sm btn-danger rounded-circle p-0 d-flex justify-content-center align-items-center" style="width: 20px; height: 20px;">
-          <i class="bi bi-x"></i>
-        </button>
-      </div>
-      <div class="card-body py-2">
-        <h2 class="ff-manuscript">Formulaire</h2>
-        <form [formGroup]="formSkills" (ngSubmit)="onSubmit()">
-          @if (msgError){
-            <span class="fs-7 text-danger">
+  <div class="col-lg-4 my-4 my-lg-0" *ngIf="skillDetail">
+    <app-skill-detail [theme]="theme" [detailSkill]="skillDetail"></app-skill-detail>
+  </div>
+  @if (authService.isAuthenticed()){
+    <div class="col-lg-4 my-4 my-lg-0">
+      <div class="card rounded-0 shadow" [ngClass]="(theme == 'light')? 'bg-dark text-white' : ''">
+        <div class="position-absolute end-0 m-1">
+          <button (click)="initFromSkills()" class="btn btn-sm btn-danger rounded-circle p-0 d-flex justify-content-center align-items-center" style="width: 20px; height: 20px;">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <div class="card-body py-2">
+          <h2 class="ff-manuscript">Formulaire</h2>
+          <form [formGroup]="formSkills" (ngSubmit)="onSubmit()">
+            @if (msgError){
+              <span class="fs-7 text-danger">
               {{msgError}}
             </span>
-          }
-          <div class="my-1">
-            <label for="title" class="form-label">Titre</label>
-            <input type="text" formControlName="title" id="title" class="form-control" placeholder="Saisir votre titre...">
-          </div>
-          <div class="my-1">
-            <label for="competence" class="form-label">Competence</label>
-            <input type="text" formControlName="skill" id="competence" class="form-control" placeholder="Saisir votre competence...">
-          </div>
-          <div class="my-1">
-            <label for="title" class="form-label">
-              Liens gitHub
-            </label>
-            <input type="text" formControlName="git" id="git" class="form-control" placeholder="Coller URL ...">
-          </div>
-          <!--<div class="row row-cols-1 row-cols-md-2 my-1">
-            <div class="col">
-              <label for="dateDebut" class="form-label">Date de debut</label>
-              <input type="date"  formControlName="dateIn" id="dateDebut" class="form-control">
+            }
+            <div class="my-1">
+              <label for="title" class="form-label">Titre</label>
+              <input type="text" formControlName="title" id="title" class="form-control" placeholder="Saisir votre titre...">
             </div>
-            <div class="col">
-              <label for="dateFin" class="form-label">Date de fin</label>
-              <input type="date" formControlName="dateOut" id="dateFin" class="form-control">
+            <div class="my-1">
+              <label for="competence" class="form-label">Competence</label>
+              <input type="text" formControlName="skill" id="competence" class="form-control" placeholder="Saisir votre competence...">
             </div>
-          </div>-->
-          <div class="my-2">
-            <label for="description" class="form-label">Description</label>
-            <textarea formControlName="description" id="description" class="form-control" placeholder="Description du projet..."></textarea>
-          </div>
-          <div class="mt-4">
-            <button type="submit" [disabled]="formSkills.invalid" class="btn btn-primary w-100">
-              Sauvegarder
-            </button>
-          </div>
-        </form>
+            <div class="my-1">
+              <label for="title" class="form-label">
+                Liens gitHub
+              </label>
+              <input type="text" formControlName="git" id="git" class="form-control" placeholder="Coller URL ...">
+            </div>
+            <div class="my-2">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" id="description" class="form-control" placeholder="Description du projet..."></textarea>
+            </div>
+            <div class="mt-4">
+              <button type="submit" [disabled]="formSkills.invalid" class="btn btn-primary w-100">
+                Sauvegarder
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+  }
 </div>

@@ -1,10 +1,19 @@
-import {Skill} from "./skill";
+import {SkillModel} from "./skill.model";
 
-export interface SkillResponse {
-  content: Skill[];
+
+export interface SkillResponseModel {
+  content: SkillModel[];
   pageable: {
     pageNumber: number;
     pageSize: number;
+    "sort": {
+      "empty": boolean,
+      "sorted": boolean,
+      "unsorted": boolean
+    },
+    "offset": number,
+    "paged": boolean,
+    "unpaged": boolean
   };
   last: boolean;
   totalPages: number;

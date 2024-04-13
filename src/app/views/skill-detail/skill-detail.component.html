@@ -1,0 +1,14 @@
+<div class="card" [ngClass]="(theme == 'light')? 'bg-dark text-white' : ''">
+<!--  <svg class="bg-secondary" width="100%" height="180"></svg>-->
+  <div class="card-body">
+    <h5 class="card-title">{{ detailSkill.title }}</h5>
+    @for (item of detailSkill.skill.split(','); track $index){
+      <span class="badge text-secondary fw-lighter bg-light me-1">{{item}}</span>
+    }
+    <p class="card-text mt-2 fs-7 text-secondary">{{ detailSkill.description }}</p>
+    <a href="{{ detailSkill.git }}" class="btn btn-dark rounded-pill">
+      <i class="bi-github"></i>
+      GitHub
+    </a>
+  </div>
+</div>

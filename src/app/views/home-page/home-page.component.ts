@@ -1,18 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {Component, inject, Input, OnInit} from '@angular/core';
+import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {
-  animate,
   animateChild,
-  keyframes,
   query,
   stagger,
-  style,
   transition,
   trigger,
   useAnimation
 } from "@angular/animations";
-import {translate} from "../../shared/animations/animations";
+import {translate} from "../../shared/animations/translateAnimations";
+import {fadeAnimations} from "../../shared/animations/fadeAnimations";
+import {ThemeService} from "../../shared/services/theme/theme.service";
 
 @Component({
   selector: 'app-home-page',
@@ -20,7 +19,8 @@ import {translate} from "../../shared/animations/animations";
   imports: [
     NgIf,
     NgOptimizedImage,
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -49,15 +49,7 @@ import {translate} from "../../shared/animations/animations";
 
     trigger('fade', [
       transition(':enter', [
-        style({opacity: 0}),
-        animate(
-          '.6s ease-out',
-          keyframes([
-            style({opacity: .2, offset: 0.3}),
-            style({opacity: .6, offset: 0.6}),
-            style({opacity: .8, offset: 1})
-          ])
-        )
+        useAnimation(fadeAnimations)
       ]),
     ]),
     trigger('translateLInOut', [
@@ -86,10 +78,14 @@ import {translate} from "../../shared/animations/animations";
 })
 export class HomePageComponent implements OnInit{
   show: boolean = true
+  themeService: ThemeService = inject(ThemeService);
+  private route: Router = inject(Router);
+  theme: string = 'light'
 
-  constructor(private route: Router) {
-  }
   ngOnInit() {
+    this.themeService.currentTheme.subscribe((theme)=>{
+      this.theme = theme
+    })
   }
 
   isShowFalse(url: string){

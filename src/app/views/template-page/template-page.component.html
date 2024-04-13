@@ -1,13 +1,18 @@
-<div class="bg-light position-relative">
+<div class="position-relative" [ngClass]="(theme == 'light')? 'bg-dark-800 text-light' : 'bg-light'">
   <div class="container pt-2 min-vh-100 position-relative z-1">
-    <app-header></app-header>
+    <app-header [theme]="(theme == 'light')"></app-header>
     <main class="h-body">
       <router-outlet></router-outlet>
     </main>
   </div>
-  <div class="position-fixed end-0 bottom-0 m-2 z-3">
-    <a routerLink="bard" routerLinkActive="invisible" style="width: 50px; height: 50px;" class="btn bg-primary p-3 border rounded-circle d-flex justify-content-center align-items-center">
-      <i class="text-white bi-chat-right-text-fill"></i>
-    </a>
+  <div class="position-fixed end-0 bottom-0 m-2 z-3" *ngIf="!(route.url == '/bard')">
+    <div class="d-flex flex-column gap-2">
+      <a (click)="setTheme()" style="width: 50px; height: 50px;" class="btn p-3 border-0 rounded-circle d-flex justify-content-center align-items-center" [ngClass]="(theme == 'light')? 'btn-outline-light' : 'btn-outline-dark'">
+        <i [ngClass]="(theme == 'light')? 'bi-cloud-sun' : 'bi-cloud-moon' "></i>
+      </a>
+      <a routerLink="/bard" style="width: 50px; height: 50px;" class="btn bg-primary p-3 border rounded-circle d-flex justify-content-center align-items-center">
+        <i class="text-white bi-chat-right-text-fill"></i>
+      </a>
+    </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import {ParentComponent} from "./shared/components/parent/parent.component";
 import {TemplatePageComponent} from "./views/template-page/template-page.component";
-import {NotFoundPageComponent} from "./views/not-found-page/not-found-page.component";
+
 
 export const routes: Routes = [
   {
@@ -39,12 +39,17 @@ export const routes: Routes = [
       {
         path: "sign-in",
         loadComponent: () => import('./views/signin-page/signin-page.component').then(m => m.SigninPageComponent)
+      },
+      {
+        path: "docs",
+        loadComponent: () => import('./views/document-page/document-page.component').then(m => m.DocumentPageComponent)
       }
     ]
   },
   {
     path: "404-NotFound",
-    component: NotFoundPageComponent
+    // component: NotFoundPageComponent,
+    loadComponent: ()=> import('./views/not-found-page/not-found-page.component').then(m => m.NotFoundPageComponent)
   },
 
   {

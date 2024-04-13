@@ -1,4 +1,4 @@
-import {animate, group, query, style, transition, trigger} from "@angular/animations";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 export let rotate = trigger('rotate', [
   transition('void => *', [

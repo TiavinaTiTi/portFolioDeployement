@@ -1,23 +1,23 @@
 <div class="row row-cols-1 row-cols-md-2 flex-row-reverse h-100 py-4 py-md-0 position-relative overflow-hidden" id="style-circle-fade">
   <div *ngIf="show" @translateLInOut class="col d-flex justify-content-center align-items-center">
-    <img ngSrc="assets/images/logo.svg" alt="avatar" srcset="" class="rounded-circle bg-primary bg-opacity-25" height="360" width="360">
+    <img src="assets/images/logo.svg" alt="avatar" class="rounded-circle bg-primary bg-opacity-25" height="360" width="360">
   </div>
   <div *ngIf="show" @translateRInOut class="col mt-4 mt-md-0 d-flex flex-column justify-content-center">
     <div class="row h-100">
       <div class="col-auto d-flex align-items-center">
         <div @fade class="d-grid gap-2">
           <div class="g-col">
-            <a class="btn btn-sm">
+            <a class="btn btn-sm rounded-circle bg-white shadow-sm">
               <i class="bi-facebook"></i>
             </a>
           </div>
           <div class="g-col">
-            <a href="" class="btn btn-sm">
+            <a href="" class="btn btn-sm rounded-circle bg-white shadow-sm">
               <i class="bi-linkedin"></i>
             </a>
           </div>
           <div class="g-col">
-            <a href="" class="btn btn-sm">
+            <a href="" class="btn btn-sm rounded-circle bg-white shadow-sm">
               <i class="bi-skype"></i>
             </a>
           </div>
@@ -27,24 +27,24 @@
         <h1 class="">
           C'est <span class="text-info">Tiavina</span>
         </h1>
-        <p class="fw-semibold ff-manuscript">Developer junior</p>
-        <p @fade class="text-muted">
+        <p class="fw-semibold ff-manuscript">Développeur Fullstack</p>
+        <p @fade class="text-secondary">
           Ma passion pour le code alimente une motivation sans faille,
           car chaque ligne apprise m'approche un peu plus de l'excellence,
           transformant ainsi mon désir d'apprendre en une quête constante pour être le meilleur.
         </p>
         <div @fade class="ff-manuscript">
-          <a class="btn btn-dark rounded-pill shadow me-1" (click)="isShowFalse('/contact')">
+          <a class="btn rounded-pill shadow me-1 fw-semibold" [ngClass]="(theme == 'light')? 'btn-dark' : 'btn-dark'" (click)="isShowFalse('/contact')">
             Contacter moi
             <i class="bi-phone ms-1"></i>
           </a>
-          <a href="assets/document/CV.pdf" target="_blank" rel="noopener noreferrer" class="btn rounded-pill fw-semibold mt-4 mt-lg-0">
+          <a href="assets/document/CV.pdf" target="_blank" rel="noopener noreferrer" class="btn rounded-pill fw-semibold mt-4 mt-lg-0" [ngClass]="(theme == 'light')? 'text-light' : 'text-dark'">
             <i class="bi-download me-1"></i>
             Download CV
           </a>
         </div>
         <div class="position-absolute start-0 bottom-0 mb-4 sm-invisible">
-          <a (click)="isShowFalse('/skills')" class="btn btn-sm fw-semibold">
+          <a (click)="isShowFalse('/skills')" class="btn btn-sm fw-semibold" [ngClass]="(theme == 'light')? 'text-light' : 'text-dark'">
             <i class="bi-mouse text-info"></i>
             skills
             <i class="bi-arrow-right text-info"></i>

@@ -7,43 +7,47 @@
           Creer compte
         </a>
       </div>
-      <div @fade class="d-flex flex-column justify-content-center align-items-center h-100 px-3 text-secondary">
+      <div @fade class="d-flex flex-column justify-content-center align-items-center h-100 px-3">
         <i class="bi-music-note fs-1"></i>
         <p class="fs-7 text-center">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, enim.</p>
       </div>
     </div>
     <div class="col p-0">
-      <div class="card border-0 rounded-0 bg-white bg-opacity-75">
+      <div class="card border-0 rounded-0" [ngClass]="(theme == 'light')? 'bg-dark' : 'bg-white bg-opacity-75'">
         <div @fade class="card-body">
-          <h3 class="ff-manuscript text-secondary">Se connecter</h3>
+          <h3 class="ff-manuscript" [ngClass]="(theme == 'light')? 'text-white' : 'text-dark' ">Se connecter</h3>
           <p class="fs-7 text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <form class="">
+          @if(errorMessage){
+            <span class="text-danger">{{ errorMessage }}</span>
+          }
+          <form [formGroup]="userFormGroup" (ngSubmit)="handelLogin()">
             <div class="form-floating mb-2">
-              <input type="mail" formControlName="email" id="mail" class="form-control rounded-0 bg-withe-50" placeholder="Saisir votre e-mail" required>
+              <input type="email" formControlName="email" id="mail" class="form-control rounded-0 bg-withe-50" placeholder="Saisir votre e-mail" required>
               <label for="mail" class="form-label">
                 <i class="bi-person"></i>
                 Addresse mail
               </label>
             </div>
             <div class="form-floating mb-2">
-              <input type="password" formControlName="password" id="password" class="form-control rounded-0 bg-withe-50" placeholder="Saisir votre e-mail" required>
+              <input type="password" formControlName="pwd" id="password" class="form-control rounded-0 bg-withe-50" placeholder="Saisir votre e-mail" required>
               <label for="password" class="form-label">
                 <i class="bi-shield-lock"></i>
                 Mot de passe
               </label>
             </div>
             <div class="mt-4">
-              <button class="btn btn-primary w-100 shadow">
+              <button type="submit" [ngClass]=" (userFormGroup.invalid)? ' disabled btn-secondary' : 'btn-primary' " class="btn w-100 shadow">
                 Se connecter
               </button>
             </div>
 
-            <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column align-items-center">
               <hr width="80%">
+              <a href="" class="text-decoration-none md-visible">Creer un nouveau compte !</a>
             </div>
             <div class="">
-              <a href="" class="btn border shadow-sm">
+              <a href="" class="btn border shadow-sm" [ngClass]="(theme == 'light')? 'text-white' : 'text-dark' ">
                 <i class="bi-google"></i>
               </a>
             </div>
