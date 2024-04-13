@@ -1,11 +1,11 @@
 
 --------------------------------------------------------------------------------
-Package: @angular/platform-browser
+Package: @angular/animations
 License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @angular/forms
+Package: @angular/platform-browser
 License: "MIT"
 
 
@@ -15,12 +15,12 @@ License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @angular/common
+Package: @angular/forms
 License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @angular/animations
+Package: @angular/common
 License: "MIT"
 
 
