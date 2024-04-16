@@ -1,0 +1,73 @@
+@if (listSkills$ | async; as listSkills){
+  @if(listSkills.content.length > 0){
+    <div class="d-grid gap-1">
+      @for(skill of listSkills.content; track skill.title){
+        <div class="col">
+          <div class="card border-0" [ngClass]="(theme == 'light')? 'bg-dark text-white' : ''">
+            <div class="position-absolute end-0 m-2">
+              <span class="fs-7 badge bg-light text-secondary rounded-pill me-1">{{ skill.dateIn | date: 'dd MMMM' }}</span>
+
+              @if (authService.isAuthenticed()){
+                <a (click)="updateFormsSkill(skill)" class="btn btn-sm bg-light rounded-circle me-1">
+                  <i class="bi-pen text-secondary"></i>
+                </a>
+                <a (click)="deleteSkill(skill.idSkills)" class="btn btn-sm bg-light rounded-circle me-1">
+                  <i class="bi-trash-fill text-danger"></i>
+                </a>
+              }
+
+              <a href="{{skill.git}}" target="_blank" class="btn rounded-pill btn-sm btn-dark">
+                <i class="bi bi-github"></i>
+                GitHub
+              </a>
+             <!-- @if (!authService.isAuthenticed()){
+                <a (click)="showDetail(skill.idSkills)" class="btn rounded-pill btn-sm btn-light ms-1">
+                  <i class="bi-arrow-right"></i>
+                </a>
+              }-->
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">
+                {{skill.title}}
+              </h4>
+              <p class="fs-7 text-secondary">
+                {{skill.description}}
+              </p>
+              @for (item of skill.skill.split(','); track $index){
+                <span class="badge text-secondary fw-lighter bg-light me-1">{{item}}</span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+      @if(listSkills.totalPages){
+        <div class="bd-example mt-4">
+          <nav>
+            <ul class="pagination pagination-sm">
+              @for (page of Array(listSkills.totalPages).fill(0); track i; let i = $index){
+                <li class="page-item" [ngClass]="(listSkills.pageable!.pageNumber == i)? 'active': ''">
+                  <a class="page-link cursor-pointer" (click)="goToPage(i)">{{ i + 1 }}</a>
+                </li>
+              }
+
+            </ul>
+          </nav>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="d-flex justify-content-center">
+          <span class="border px-2 py-1 rounded-pill text-secondary fs-7 bg-white shadow-sm">
+            <i class="bi-exclamation-diamond"></i>
+            Aucune compétence n’est ajoutée!
+          </span>
+    </div>
+  }
+
+} @else {
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" [ngClass]="(theme == 'light')? 'text-light' : 'text-dark' "  role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+}

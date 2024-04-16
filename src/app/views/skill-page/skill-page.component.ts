@@ -4,11 +4,12 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {SkillsService} from "../../shared/services/skills/skills.service";
 import {SkillResponseModel} from "../../core/models/skill-response.model";
 import {SkillModel} from "../../core/models/skill.model";
-import {Observable} from "rxjs";
+import {Observable, toArray} from "rxjs";
 import {RouterLink} from "@angular/router";
 import {UserService} from "../../shared/services/user/user-service";
 import {ThemeService} from "../../shared/services/theme/theme.service";
 import {SkillDetailComponent} from "../skill-detail/skill-detail.component";
+import {ListSkillsComponent} from "../list-skills/list-skills.component";
 
 @Component({
   selector: 'app-skill-page',
@@ -21,7 +22,8 @@ import {SkillDetailComponent} from "../skill-detail/skill-detail.component";
     NgClass,
     RouterLink,
     DatePipe,
-    SkillDetailComponent
+    SkillDetailComponent,
+    ListSkillsComponent
   ],
   templateUrl: './skill-page.component.html',
   styleUrl: './skill-page.component.scss',
@@ -97,12 +99,6 @@ export class SkillPageComponent implements OnInit{
    */
   getAllSkillsPage(search:string, size:number, page: number){
     this.listSkills$ = this.skillsService.getAllSkillsPage(search, size, page)
-
-    /*this.listSkills$.subscribe({
-      next: value => {
-        this.listSkills = value
-      }
-    })*/
   }
 
   /**
@@ -129,7 +125,7 @@ export class SkillPageComponent implements OnInit{
 
   onSubmit(){
     if(this.formSkills.valid){
-      if(this.formSkills.value.id === 0){
+      if(this.formSkills.value.id === 0 || this.formSkills.value.id === null){
         this.skillsService.postSkill(this.formSkills.value).subscribe({
           next: ()=>{
             let search = this.formSearch.controls.name.value
@@ -154,7 +150,8 @@ export class SkillPageComponent implements OnInit{
 
   goToPage(i: number){
     this.defaultPage = i
-    this.ngOnInit()
+    let search = this.formSearch.controls.name.value
+    this.getAllSkillsPage(search, this.defaultSize, this.defaultPage)
   }
 
   deleteSkill(id: number){
@@ -185,11 +182,12 @@ export class SkillPageComponent implements OnInit{
     return '';
   }*/
 
-  showDetail(id: number){
+  showDetail(id: number)
+  {
     this.skillsService.fetchSkillId(id).subscribe((value)=>{
       this.skillDetail = value;
       console.log("Skill Detail: " + JSON.stringify(value))
     })
   }
-
+  
 }

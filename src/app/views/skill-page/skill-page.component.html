@@ -10,6 +10,7 @@
     @if(notification){
       <span class="alert alert-info">{{notification}}</span>
     }
+<!--    <app-list-skills [theme]="theme" [listSkills$]="listSkills$"></app-list-skills>-->
     @if (listSkills$ | async; as listSkills){
       @if(listSkills.content.length > 0){
         <div class="d-grid gap-1">
@@ -92,7 +93,7 @@
       <div class="card rounded-0 shadow" [ngClass]="(theme == 'light')? 'bg-dark text-white' : ''">
         <div class="position-absolute end-0 m-1">
           <button (click)="initFromSkills()" class="btn btn-sm btn-danger rounded-circle p-0 d-flex justify-content-center align-items-center" style="width: 20px; height: 20px;">
-            <i class="bi bi-x"></i>
+            <i class="bi-x"></i>
           </button>
         </div>
         <div class="card-body py-2">
